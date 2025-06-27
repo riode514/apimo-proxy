@@ -1,6 +1,4 @@
-const fetch = require('node-fetch');
-
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   const token = '68460111a25a4d1ba2508ead22a2b59e16cfcfcd';
   const providerId = '4352';
 
@@ -23,4 +21,4 @@ module.exports = async (req, res) => {
     console.error('Serverless function error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-};
+}
