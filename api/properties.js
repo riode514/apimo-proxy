@@ -1,6 +1,23 @@
-export default async function handler(req, res) {
+// netlify/functions/properties.js
+exports.handler = async (event, context) => {
   const token = '68460111a25a4d1ba2508ead22a2b59e16cfcfcd';
   const providerId = '4352';
+  
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+
+  // Handle preflight requests
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
+  }
 
   try {
     const response = await fetch(`https://api.apimo.net/api/v1/property?provider=${providerId}`, {
@@ -14,11 +31,23 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).json(data);
-
+    
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(data)
+    };
+    
   } catch (error) {
     console.error('Serverless function error:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ 
+        error: 'Internal Server Error',
+        details: error.message 
+      })
+    };
   }
-}
+};
