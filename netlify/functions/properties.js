@@ -1,5 +1,5 @@
 // netlify/functions/properties.js
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 exports.handler = async (event, context) => {
   const token = '68460111a25a4d1ba2508ead22a2b59e16cfcfcd';
